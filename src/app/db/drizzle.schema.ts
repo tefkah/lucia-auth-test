@@ -3,9 +3,9 @@ import {
   text,
   integer,
   uniqueIndex,
-} from 'drizzle-orm/sqlite-core'
-import { relations } from 'drizzle-orm'
-import { ulid } from 'ulidx'
+} from 'drizzle-orm/sqlite-core';
+import { relations } from 'drizzle-orm';
+import { ulid } from 'ulidx';
 
 export const userTable = sqliteTable('user', {
   id: text('id')
@@ -13,12 +13,14 @@ export const userTable = sqliteTable('user', {
     .$defaultFn(() => ulid()),
   email: text('email').unique().notNull(),
   emailVerified: integer('email_verified').notNull(),
-})
+  hashedPassword: text('hashed_password').notNull(),
+  githubId: integer('github_id').unique(),
+});
 
 export const userTableRelations = relations(userTable, ({ many }) => ({
   session: many(sessionTable),
   emailVerificationCode: many(emailVerificationCodeTable),
-}))
+}));
 
 export const sessionTable = sqliteTable('session', {
   id: text('id').primaryKey(),
@@ -29,14 +31,14 @@ export const sessionTable = sqliteTable('session', {
       onDelete: 'cascade',
     }),
   expiresAt: integer('expires_at').notNull(),
-})
+});
 
 export const sessionTableRelations = relations(sessionTable, ({ one }) => ({
   user: one(userTable, {
     fields: [sessionTable.userId],
     references: [userTable.id],
   }),
-}))
+}));
 
 export const emailVerificationCodeTable = sqliteTable(
   'email_verification_code',
@@ -53,7 +55,7 @@ export const emailVerificationCodeTable = sqliteTable(
       }),
     expiresAt: integer('expires_at'),
   }
-)
+);
 
 export const emailVerificationCodeRelations = relations(
   emailVerificationCodeTable,
@@ -63,4 +65,4 @@ export const emailVerificationCodeRelations = relations(
       references: [userTable.id],
     }),
   })
-)
+);

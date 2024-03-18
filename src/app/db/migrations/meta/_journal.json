@@ -22,6 +22,20 @@
       "when": 1706531812894,
       "tag": "0002_talented_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1710764893919,
+      "tag": "0003_flowery_major_mapleleaf",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1710765756154,
+      "tag": "0004_flimsy_jazinda",
+      "breakpoints": true
     }
   ]
 }

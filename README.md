@@ -87,65 +87,65 @@ If you want to use this repo, check out 2 commits behind this as that works with
 #### src/middleware.ts
 
 ```ts
-import { NextRequest, NextResponse } from 'next/server'
-import { RateLimiterMemory } from 'rate-limiter-flexible'
+import { NextRequest, NextResponse } from 'next/server';
+import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 const opts = {
-	points: 10,
-	duration: 5, // Per second
-}
+  points: 10,
+  duration: 5, // Per second
+};
 
-const rateLimiter = new RateLimiterMemory(opts)
+const rateLimiter = new RateLimiterMemory(opts);
 
 export default async function middleware(request: NextRequest) {
-	if (request.method === 'POST') {
-		let res: any
-		try {
-			res = await rateLimiter.consume(2)
-			console.log({ res })
-		} catch (error) {
-			res = error
-		}
+  if (request.method === 'POST') {
+    let res: any;
+    try {
+      res = await rateLimiter.consume(2);
+      console.log({ res });
+    } catch (error) {
+      res = error;
+    }
 
-		if (res._remainingPoints > 0) {
-			return NextResponse.next()
-		} else {
-			return NextResponse.json(
-				{
-					error: 'Rate limit exceeded. Please try again later.',
-				},
-				{
-					status: 429,
-				},
-			)
-		}
-	}
+    if (res._remainingPoints > 0) {
+      return NextResponse.next();
+    } else {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded. Please try again later.',
+        },
+        {
+          status: 429,
+        }
+      );
+    }
+  }
 }
 
 export const config = {
-	matcher: ['/api/login'],
-}
+  matcher: ['/api/login'],
+};
 ```
 
 #### rate-limit/login.ts
 
 ```ts
-const LOCALHOST_URL = 'http://localhost:3000'
+const LOCALHOST_URL = 'http://localhost:3000';
 
 async function main() {
-	for (let i = 0; i < 20; i++) {
-		const url = `${LOCALHOST_URL}/api/login`
-		const email = `test${i}@example.com`
-		const body = JSON.stringify({ email })
+  for (let i = 0; i < 20; i++) {
+    const url = `${LOCALHOST_URL}/api/login`;
+    const email = `test${i}@example.com`;
+    const body = JSON.stringify({ email });
 
-		const response = await fetch(url, { method: 'POST', body })
-		const data = await response.json()
+    const response = await fetch(url, { method: 'POST', body });
+    const data = await response.json();
 
-		console.log({ data })
-	}
+    console.log({ data });
+  }
 }
 
-main()
+main();
 ```
 
 Run Next.js dev server using `pnpm dev` in one terminal & brute-force the login api in another using `pnpm ratelimit:login` & it'll show this output in ratelimit terminal:

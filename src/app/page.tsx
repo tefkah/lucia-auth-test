@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-import { validateRequest } from '@/app/auth/lucia'
+import { validateRequest } from '@/app/auth/lucia';
 
 export default async function Home() {
-  const { user } = await validateRequest()
-  const userExists = user && user.emailVerified
-  if (userExists) return redirect('/dashboard')
+  const { user } = await validateRequest();
+  const userExists = user && user.emailVerified;
+  if (userExists) return redirect('/dashboard');
 
   return (
     <main className="space-x-2">
@@ -17,5 +17,5 @@ export default async function Home() {
         login
       </Link>
     </main>
-  )
+  );
 }
