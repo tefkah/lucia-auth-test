@@ -9,6 +9,8 @@ import { parseWithZod } from '@conform-to/zod';
 import { login } from '@/app/actions/login';
 import { loginSchema } from '@/app/lib/zod.schema';
 import { Toast } from '@/app/components/toast';
+import { Github } from 'lucide-react';
+import Image from 'next/image';
 
 export function LoginForm() {
   const [lastResult, action] = useFormState(login, undefined);
@@ -52,7 +54,21 @@ export function LoginForm() {
           login
         </button>
       </form>
-      <Toast message="Email Verification Successful!" />
+
+      <a href="/auth/github/login" className="flex gap-x-2 items-center">
+        <Github />
+        Sign in with Github
+      </a>
+      <a href="/auth/orcid/login" className="flex gap-x-2 items-center">
+        <Image
+          src="/orcid.svg"
+          height="20"
+          width="20"
+          alt="ORCID logo"
+          className="w-6 h-6"
+        />
+        Sign in with ORCID
+      </a>
     </>
   );
 }

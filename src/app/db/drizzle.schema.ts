@@ -13,8 +13,9 @@ export const userTable = sqliteTable('user', {
     .$defaultFn(() => ulid()),
   email: text('email').unique().notNull(),
   emailVerified: integer('email_verified').notNull(),
-  hashedPassword: text('hashed_password').notNull(),
+  hashedPassword: text('hashed_password'),
   githubId: integer('github_id').unique(),
+  orcidId: text('orcid_id').unique(),
 });
 
 export const userTableRelations = relations(userTable, ({ many }) => ({
